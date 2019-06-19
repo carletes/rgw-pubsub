@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/golang/glog"
 	"github.com/spf13/cobra"
 )
 
@@ -26,6 +27,30 @@ func init() {
 var rootCmd = &cobra.Command{
 	Use:  "rgw-pubsub",
 	Long: "A command-line tool to interact with Ceph's object store PubSub system.",
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		var found bool
+
+		if AccessKey == "" {
+			AccessKey, found = os.LookupEnv("AWS_ACCESS_KEY_ID")
+			if !found {
+				glog.Fatal("Env variable AWS_ACCESS_KEY_ID not set")
+			}
+		}
+
+		if SecretKey == "" {
+			SecretKey, found = os.LookupEnv("AWS_SECRET_ACCESS_KEY")
+			if !found {
+				glog.Fatal("Env variable AWS_SECRET_ACCESS_KEY not set")
+			}
+		}
+
+		if PubSubEndpoint == "" {
+			PubSubEndpoint, found = os.LookupEnv("RGW_PUBSUB_URL")
+			if !found {
+				glog.Fatal("Env variable RGW_PUBSUB_URL not set")
+			}
+		}
+	},
 }
 
 func Execute() {
