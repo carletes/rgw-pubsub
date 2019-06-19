@@ -15,7 +15,7 @@ func init() {
 
 var createSubscriptionCmd = &cobra.Command{
 	Use:   "create-subscription [name] [topic] [amqp-url] [amqp-exchange]",
-	Args:  cobra.ExactArgs(5),
+	Args:  cobra.ExactArgs(4),
 	Short: "Create a subscription",
 	Run: func(cmd *cobra.Command, args []string) {
 	},
