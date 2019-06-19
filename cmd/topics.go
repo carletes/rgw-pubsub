@@ -14,7 +14,7 @@ var createTopicCmd = &cobra.Command{
 	Short: "Create a topic",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		client := Client()
+		client := getClientOrDie()
 		topic := args[0]
 		err := client.RGWCreateTopic(topic)
 		if err != nil {

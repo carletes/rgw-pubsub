@@ -14,7 +14,7 @@ var createNotificationCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(2),
 	Short: "Create a notification",
 	Run: func(cmd *cobra.Command, args []string) {
-		client := Client()
+		client := getClientOrDie()
 
 		bucket := args[0]
 		topic := args[1]

@@ -5,7 +5,7 @@ import (
 	"github.com/golang/glog"
 )
 
-func Client() *rgwpubsub.RGWClient {
+func getClientOrDie() *rgwpubsub.RGWClient {
 	client, err := rgwpubsub.NewRGWClient(Username, AccessKey, SecretKey, PubSubEndpoint, Zonegroup)
 	if err != nil {
 		glog.Fatalf("failed to create RGW PubSub client: %v", err)
