@@ -23,9 +23,10 @@ var createSubscriptionCmd = &cobra.Command{
 
 		name := args[0]
 		topic := args[1]
-		amqpURL := args[2]
+		url := args[2]
+		exchange := args[3]
 
-		err := client.RGWCreateSubscription(name, topic, amqpURL)
+		err := client.RGWCreateSubscription(name, topic, url, exchange, ackLevel)
 		if err != nil {
 			glog.Fatalf("failed to create subscription: %v", err)
 		}
