@@ -12,6 +12,7 @@ var (
 func init() {
 	createSubscriptionCmd.Flags().StringVar(&ackLevel, "amqp-ack-level", "none", "AMQP ack level")
 	rootCmd.AddCommand(createSubscriptionCmd)
+	rootCmd.AddCommand(deleteSubscriptionCmd)
 }
 
 var createSubscriptionCmd = &cobra.Command{
@@ -29,6 +30,21 @@ var createSubscriptionCmd = &cobra.Command{
 		err := client.RGWCreateSubscription(name, topic, url, exchange, ackLevel)
 		if err != nil {
 			glog.Fatalf("failed to create subscription: %v", err)
+		}
+	},
+}
+
+var deleteSubscriptionCmd = &cobra.Command{
+	Use:   "delete-subscription",
+	Args:  cobra.ExactArgs(1),
+	Short: "Delete a subscription",
+	Run: func(cmd *cobra.Command, args []string) {
+		client := getClientOrDie()
+
+		name := args[0]
+		err := client.RGWDeleteSubscription(name)
+		if err != nil {
+			glog.Fatalf("failed to delere subscription %s: %v", name, err)
 		}
 	},
 }
