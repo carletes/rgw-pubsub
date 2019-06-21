@@ -8,6 +8,7 @@ import (
 func init() {
 	rootCmd.AddCommand(createTopicCmd)
 	rootCmd.AddCommand(deleteTopicCmd)
+	rootCmd.AddCommand(listTopicsCmd)
 }
 
 var createTopicCmd = &cobra.Command{
@@ -34,6 +35,24 @@ var deleteTopicCmd = &cobra.Command{
 		err := client.RGWDeleteTopic(topic)
 		if err != nil {
 			glog.Fatalf("failed to delete topic %s: %v", topic, err)
+		}
+	},
+}
+
+var listTopicsCmd = &cobra.Command{
+	Use:   "list-topics",
+	Short: "List all topics",
+	Args:  cobra.ExactArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+		client := getClientOrDie()
+
+		subs, err := client.RGWGetSubscriptions()
+		if err != nil {
+			glog.Fatalf("failed to list subscriptions: %v", err)
+		}
+
+		for _, ss := range subs.Subscriptions {
+			client.RGWDeleteTopic(ss.Topic.Name)
 		}
 	},
 }
